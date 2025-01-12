@@ -9,6 +9,7 @@ Bei diesem Projekt handelt es sich um die Implementierung der in der Seminararbe
   - [1. Docker Desktop](#1-docker-desktop)
   - [2. Repository klonen](#2-repository-klonen)
   - [3. Docker Images und Container erstellen](#3-docker-images-und-container-erstellen)
+  - [4. Docker Container stoppen/löschen](#3-docker-container-stoppenlöschen)
 - [Testen](#testen)
   - [Nachrichten Publishen](#nachrichten-publishen)
   - [RabbitMQ UI Management](#rabbitmq-ui-management)
@@ -19,8 +20,8 @@ Dieser Abschnitt soll einen Überblick über die wichtigsten Verzeichnisse und D
 .
 ├── applications  # Enthält Publisher- und Consumer-Anwendungscode
 │   ├── rabbitmq-consumer
-│   │   ├── Dockerfile  # Dockerfile für Consumer-Image
-│   │   ├── ...    
+│   │   ├── ...
+│   │   ├── docker  # Enthält JAR-File der Anwendung    
 │   │   ├── src                          
 │   │   │   ├── main                     
 │   │   │   │   ├── java                 
@@ -35,14 +36,14 @@ Dieser Abschnitt soll einen Überblick über die wichtigsten Verzeichnisse und D
 │   │   │   │   │               └── listener
 │   │   │   │   │                   └── RabbitMQConsumer.java  # Klasse zum Konsumieren von Nachrichten aus Quorum Queue
 │   │   │   │   └── resources 
-│   │   │   │       ├── application.properties  # Enthält Adressen der Upstream RabbitMQ Broker
-│   │   │   │       ├── ... 
-│   │   │   └── ...         
-│   │   └── target  # Enthält kompilierte Klassen und JAR-File der Anwendung
-│   │       ├── ...            
+│   │   │   │       └── application.properties  # Enthält Adressen der Upstream RabbitMQ Broker
+│   │   │   └── ...
+│   │   ├── ...
+│   │   ├── Dockerfile  # Dockerfile für Consumer-Image
+│   │   ├── ...
 │   └── rabbitmq-publisher     
-│       ├── Dockerfile  # Dockerfile für Publisher-Image
-│       ├── ...                 
+│       ├── ...
+│       ├── docker  # Enthält JAR-File der Anwendung    
 │       ├── src                 
 │       │   ├── main            
 │       │   │   ├── java        
@@ -62,11 +63,11 @@ Dieser Abschnitt soll einen Überblick über die wichtigsten Verzeichnisse und D
 │       │   │   │               └── services  
 │       │   │   │                   └── RabbitMQProducer.java  # Klasse zum Publishen von Nachrichten. Enthält Callback, falls Nachricht nicht erfolgreich published werden kann.
 │       │   │   └── resources
-│       │   │       ├── application.properties  # Enthält Adresse des Local RabbitMQ und Publisher Confirm Konfiguration.
-│       │   │       ├── ...  
-│       │   └── ...          
-│       └── target  # Enthält kompilierte Klassen und JAR-File der Anwendung
-│           ├── ...            
+│       │   │       └── application.properties  # Enthält Adresse des Local RabbitMQ und Publisher Confirm Konfiguration.
+│       │   └── ...
+│       ├── ...
+│       ├── Dockerfile  # Dockerfile für Publisher-Image
+│       ├── ...
 ├── configs  # Konfigurationsdateien für RabbitMQ Broker
 │   ├── local-rabbit              
 │   │   ├── advanced.config  # Enthält Deklarierung des Shovel und der Queue für Local RabbitMQ
@@ -88,7 +89,7 @@ Klicke dazu auf folgenden Link, falls noch nicht heruntergeladen: [Docker Deskto
 ### 2. Repository klonen
 Führe den folgenden Befehl im gewünschten Verzeichnis im Terminal oder in der Eingabeaufforderung bzw. PowerShell aus, um das Repository zu klonen:
 ```bash
-git clone https://github.com/nklusmann/seminararbeit-rabbitmq.git
+git clone https://github.com/nklusmann/rabbitmq-seminararbeit.git
 ```
 
 ### 3. Docker Images und Container erstellen
