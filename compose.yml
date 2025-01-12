@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+
+  rabbitmq-publisher:
+    build:
+      context: ./applications/rabbitmq-publisher
+      dockerfile: Dockerfile
+    container_name: rabbitmq-publisher
+    hostname: rabbitmq-publisher
+    networks:
+      - rabbits
+    ports:
+      - "9999:9999"
+
+  rabbitmq-consumer:
+    build:
+      context: ./applications/rabbitmq-consumer
+      dockerfile: Dockerfile
+    container_name: rabbitmq-consumer
+    hostname: rabbitmq-consumer
+    networks:
+      - rabbits
+
+  local-rabbit:
+    image: rabbitmq:4.0-management
+    container_name: local-rabbit
+    hostname: local-rabbit
+    networks:
+      - rabbits
+    ports:
+      - "8080:15672"
+    volumes:
+      - ./configs/local-rabbit:/config/
+    environment:
+      - RABBITMQ_ENABLED_PLUGINS_FILE=/config/enabled_plugins.txt
+      - RABBITMQ_ADVANCED_CONFIG_FILE=/config/advanced.config
+
+  upstream-rabbit-1:
+    image: rabbitmq:4.0-management
+    container_name: upstream-rabbit-1
+    hostname: upstream-rabbit-1
+    networks:
+      - rabbits
+    ports:
+      - "8081:15672"
+    volumes:
+      - ./configs/upstream-rabbit-1:/config/
+    environment:
+      - RABBITMQ_CONFIG_FILE=/config/rabbitmq
+      - RABBITMQ_ERLANG_COOKIE=WIWVHCDTCIUAWANLMQAW
+
+  upstream-rabbit-2:
+    image: rabbitmq:4.0-management
+    container_name: upstream-rabbit-2
+    hostname: upstream-rabbit-2
+    networks:
+      - rabbits
+    ports:
+      - "8082:15672"
+    volumes:
+      - ./configs/upstream-rabbit-2:/config/
+    environment:
+      - RABBITMQ_CONFIG_FILE=/config/rabbitmq
+      - RABBITMQ_ERLANG_COOKIE=WIWVHCDTCIUAWANLMQAW
+
+  upstream-rabbit-3:
+    image: rabbitmq:4.0-management
+    container_name: upstream-rabbit-3
+    hostname: upstream-rabbit-3
+    networks:
+      - rabbits
+    ports:
+      - "8083:15672"
+    volumes:
+      - ./configs/upstream-rabbit-3:/config/
+    environment:
+      - RABBITMQ_CONFIG_FILE=/config/rabbitmq
+      - RABBITMQ_ERLANG_COOKIE=WIWVHCDTCIUAWANLMQAW
+
+networks:
+  rabbits:
+    driver: bridge
